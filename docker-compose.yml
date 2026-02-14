@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  # MaxKB 知识库
+  maxkb:
+    image: 1panel/maxkb
+    container_name: agentchekong-maxkb
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - MAXKB_SECRET_KEY=your_secret_key
+    volumes:
+      - maxkb-data:/opt/maxkb/data
+    networks:
+      - agentchekong-network
+
+  # Langfuse 观测平台
+  langfuse:
+    image: langfuse/langfuse
+    container_name: agentchekong-langfuse
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://langfuse:langfuse@db:5432/langfuse
+      - NEXTAUTH_SECRET=secret
+      - NEXTAUTH_URL=http://localhost:3000
+    depends_on:
+      - db
+    networks:
+      - agentchekong-network
+
+  # Langfuse 数据库
+  db:
+    image: postgres:15
+    container_name: agentchekong-db
+    restart: always
+    environment:
+      - POSTGRES_USER=langfuse
+      - POSTGRES_PASSWORD=langfuse
+      - POSTGRES_DB=langfuse
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - agentchekong-network
+
+volumes:
+  maxkb-data:
+  postgres-data:
+
+networks:
+  agentchekong-network:
+    driver: bridge

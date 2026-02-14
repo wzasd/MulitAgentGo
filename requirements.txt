@@ -1,0 +1,35 @@
+# 阿里商旅多智能体差旅助手 - 依赖文件
+
+# 核心框架
+agentscope>=0.5.0
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+
+# 大模型
+dashscope>=1.20.0
+
+# 观测平台
+langfuse>=2.0.0
+
+# HTTP 客户端
+httpx>=0.27.0
+
+# 数据库
+sqlalchemy>=2.0.0
+aiosqlite>=0.20.0
+
+# 工具库
+python-dotenv>=1.0.0
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+
+# 异步
+asyncio>=3.4.3
+
+# JSON 处理
+orjson>=3.10.0
+
+# 测试
+pytest>=8.0.0
+pytest-asyncio>=0.23.0
+pytest-cov>=4.0.0

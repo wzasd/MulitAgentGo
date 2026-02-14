@@ -1,7 +1,7 @@
 # 阿里商旅多智能体差旅助手 - 依赖文件
 
 # 核心框架
-agentscope>=0.5.0
+agentscope>=0.1.0
 fastapi>=0.115.0
 uvicorn[standard]>=0.30.0
 

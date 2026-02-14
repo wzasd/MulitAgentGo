@@ -38,7 +38,7 @@ class Settings(BaseSettings):
 
     class Config:
         env_file = ".env"
-        extra = "allow局配置实例"
+        extra = "allow"
 
 
 # 全

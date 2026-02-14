@@ -4,7 +4,7 @@
 """
 from typing import Optional
 from app.config import settings
-from agentscope.models import DashScopeModel
+from agentscope.models import DashScopeChatWrapper
 
 
 class EvaluationScorer:
@@ -15,8 +15,9 @@ class EvaluationScorer:
     """
 
     def __init__(self):
-        self.model = DashScopeModel(
-            model=settings.dashscope_model,
+        self.model = DashScopeChatWrapper(
+            config_name='dashscope',
+            model_name=settings.dashscope_model,
             api_key=settings.dashscope_api_key,
         )
 

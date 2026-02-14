@@ -1,22 +1,18 @@
 """
 智能体工具定义
+使用 AgentScope ServiceToolkit
 """
 from typing import List
-from agentscope.tools import function_tool
+from agentscope.service import ServiceToolkit
 
 
-@function_tool
+# 创建工具包
+toolkit = ServiceToolkit()
+
+
+# 定义工具函数
 def search_knowledge(query: str, top_k: int = 3) -> str:
-    """
-    搜索知识库
-
-    Args:
-        query: 查询内容
-        top_k: 返回结果数量
-
-    Returns:
-        搜索结果
-    """
+    """搜索知识库"""
     from knowledge.client import KnowledgeClient
 
     client = KnowledgeClient()
@@ -33,17 +29,8 @@ def search_knowledge(query: str, top_k: int = 3) -> str:
     return output
 
 
-@function_tool
 def query_trip_policy(policy_type: str = "差标") -> str:
-    """
-    查询差旅政策
-
-    Args:
-        policy_type: 政策类型（差标、预算、报销等）
-
-    Returns:
-        政策信息
-    """
+    """查询差旅政策"""
     from knowledge.client import KnowledgeClient
 
     client = KnowledgeClient()
@@ -55,7 +42,6 @@ def query_trip_policy(policy_type: str = "差标") -> str:
         return f"未找到关于{policy_type}的相关政策"
 
 
-@function_tool
 def plan_trip(
     destination: str,
     start_date: str = None,
@@ -63,20 +49,7 @@ def plan_trip(
     purpose: str = None,
     budget: float = None
 ) -> str:
-    """
-    规划行程
-
-    Args:
-        destination: 目的地
-        start_date: 开始日期
-        end_date: 结束日期
-        purpose: 出差目的
-        budget: 预算
-
-    Returns:
-        行程规划结果
-    """
-    # 模拟行程规划
+    """规划行程"""
     output = f"""行程规划：
 目的地：{destination}
 时间：{start_date or '待定'} - {end_date or '待定'}
@@ -96,7 +69,6 @@ def plan_trip(
     return output
 
 
-@function_tool
 def book_ticket(
     ticket_type: str,
     from_city: str,
@@ -104,19 +76,7 @@ def book_ticket(
     date: str,
     budget: float = None
 ) -> str:
-    """
-    预订机票/火车票
-
-    Args:
-        ticket_type: 票类型（飞机、火车）
-        from_city: 出发城市
-        to_city: 目的城市
-        date: 日期
-        budget: 预算
-
-    Returns:
-        预订结果
-    """
+    """预订机票/火车票"""
     return f"""订单申请：
 票类型：{ticket_type}
 出发：{from_city}
@@ -125,34 +85,23 @@ def book_ticket(
 预算：{budget}
 
 请确认以上信息，我将为您创建订单申请。
-
-
 """
 
 
-@function_tool
 def collect_trip_info(info_type: str, info: str) -> str:
-    """
-    收集出差信息
-
-    Args:
-        info_type: 信息类型
-        info: 信息内容
-
-    Returns:
-        确认信息
-    """
+    """收集出差信息"""
     return f"已收集 {info_type}: {info}，请问还有其他信息需要补充吗？"
 
 
-# 工具列表
-trip_tools = [
-    plan_trip,
-    book_ticket,
-    collect_trip_info,
-]
+# 注册工具
+toolkit.add(search_knowledge, description="搜索知识库内容，回答差旅政策相关问题")
+toolkit.add(query_trip_policy, description="查询差旅政策，如差标、报销等")
+toolkit.add(plan_trip, description="为用户规划出差行程")
+toolkit.add(book_ticket, description="为用户预订机票或火车票")
+toolkit.add(collect_trip_info, description="收集用户的出差信息")
 
-knowledge_tools = [
-    search_knowledge,
-    query_trip_policy,
-]
+
+# 导出工具包
+trip_toolkit = toolkit
+knowledge_toolkit = toolkit
+all_toolkit = toolkit
